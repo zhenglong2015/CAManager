@@ -8,6 +8,8 @@ using Org.BouncyCastle.Math;
 using Org.BouncyCastle.OpenSsl;
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.X509;
+using System.Security.Cryptography.X509Certificates;
+using X509Certificate = Org.BouncyCastle.X509.X509Certificate;
 
 namespace CAManager
 {
@@ -30,11 +32,23 @@ namespace CAManager
             AsymmetricCipherKeyPair serverKeyPair = GenerateKeyPair();
             X509Certificate serverCert = GenerateCertificate(serverKeyPair, rootCert, rootKeyPair.Private, "CN=Server", ipAddresses);
 
+
             // 将证书和私钥保存为PEM格式的文件
             // 将证书和私钥分别保存为PEM格式的文件
             SaveToPem("bouncyCastle/ca.crt", "bouncyCastle/ca.key", rootCert, rootKeyPair.Private);
             SaveToPem("bouncyCastle/client.crt", "bouncyCastle/client.key", clientCert, clientKeyPair.Private);
             SaveToPem("bouncyCastle/server.crt", "bouncyCastle/server.key", serverCert, serverKeyPair.Private);
+
+
+            // Convert to X509Certificate2 format
+            X509Certificate2 certRoot = new X509Certificate2(rootCert.GetEncoded());
+            ExportCertificateToPfx(certRoot, "bouncyCastle/ca.pfx", "123456");
+
+            X509Certificate2 certServer = new X509Certificate2(serverCert.GetEncoded());
+            ExportCertificateToPfx(certServer, "bouncyCastle/server.pfx", "123456");
+
+            X509Certificate2 certClient = new X509Certificate2(clientCert.GetEncoded());
+            ExportCertificateToPfx(certClient, "bouncyCastle/client.pfx", "123456");
         }
 
         private AsymmetricCipherKeyPair GenerateKeyPair()
@@ -106,6 +120,11 @@ namespace CAManager
             }
         }
 
+
+        public static void ExportCertificateToPfx(X509Certificate2 certificate, string fileName, string password)
+        {
+            File.WriteAllBytes(fileName, certificate.Export(X509ContentType.Pfx, password));
+        }
 
         public X509Certificate LoadBouncyCastleCertificate(string certFilePath)
         {

@@ -1,0 +1,41 @@
+# ================
+# ===== 文件 =====
+# ================
+.DS_Store
+AVW.Server.RESTful.User.xml
+.dockerignore
+
+# ================
+# ===== 类型 =====
+# ================
+*.suo
+*.csproj.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# ==================
+# ===== 文件夹 =====
+# ==================
+.vs/
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+bld/
+[Bb]in/
+[Oo]bj/
+# [Ll]og/
+
+wwwroot/
+Properties/
+Migrations/
+appsettings.json
+/AVW.Server.AutoCreateDb/sql/avwcommunity.sql
+/AVW.Server.AutoCreateDb/sql/avwprojecthosting.sql
+/AVW.Server.AutoCreateDb/sql/avw_studio_publishdatasource_e638fe.sql
+liqing.test/
+/AVW.Server.Util/Crypt/RSAUtil - 复制.cs
+/AVW.Server.Console.Collector.Private/machineId.tgmid
